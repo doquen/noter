@@ -6,7 +6,7 @@ CONFIG += c++14
 # depend on your computer). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-
+ICON = NoTer.ico
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -32,3 +32,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     ql-channel.hpp \
     ql-channel-serial.hpp
+
+DISTFILES +=

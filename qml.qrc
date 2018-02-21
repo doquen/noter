@@ -8,5 +8,7 @@
         <file>ConfigForm.ui.qml</file>
         <file>Utilidades.qml</file>
         <file>UtilidadesForm.ui.qml</file>
+        <file>Toast.qml</file>
+        <file>ToastManager.qml</file>
     </qresource>
 </RCC>

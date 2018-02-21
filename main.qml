@@ -89,5 +89,9 @@ ApplicationWindow {
         id: config
         visible: false
     }
+
+    ToastManager{
+        id: toast
+    }
 }
 

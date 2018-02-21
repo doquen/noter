@@ -3,7 +3,6 @@ import QtQuick.Controls 2.2
 
 ConsoleForm {
 
-
     Keys.onPressed: {
         if(consmode){
             switch (event.key) {
@@ -23,32 +22,43 @@ ConsoleForm {
         }
     }
 
-    textFieldConsole.onTextChanged: {
-        if(switchHex.checked)
-        textFieldConsole.text = textFieldConsole.text.split(" ").map(
-                    function(x){
-                        var n = parseInt(x,16)
-                        return isNaN(n) ? "<span style='color:#FF0000'> "+x+" </span>" :
-                                          x
-
-                    }
-                    ).join("")
-    }
 
     buttonEnviar.onClicked: {
-        var msg = textFieldConsole.text +comboBoxAppend.model.get(comboBoxAppend.currentIndex).value
+        var msg = textFieldConsole.text
         if(!switchHex.checked){
             if(serial.isOpen)
-                serial.writeString(msg)
-
-            if(hex && echo){
-                msg = msg.split("").map(function(x) {return Number(x.charCodeAt(0))})
-                sendText(msg)
-            }
+                serial.writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
         }
         else {
-
+            msg = msg.trim().split(" ")
+            var arr = []
+            for(var i = 0; i < msg.length; i++){
+                var n = parseInt(msg[i],16)
+                if (!isNaN(n)){
+                    arr.push(n)
+                }
+                else{
+                    arr = []
+                    break
+                }
+            }
+            if(arr.length > 0){
+                msg = arr.map(
+                            function(x){
+                                return String.fromCharCode(x)
+                            }
+                            ).join("")
+                if(serial.isOpen)
+                    serial.writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
+            }
+            else {
+                toast.show("Error en caracteres Hexadecimales.",2000,'red')
+            }
         }
+        if(hex)
+            msg = msg.split("").map(function(x) {return Number(x.charCodeAt(0))})
+        if(echo)
+            sendText(msg)
     }
 
     function sendBytes(msg){

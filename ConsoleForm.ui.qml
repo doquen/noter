@@ -49,9 +49,8 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: 10
 
-        TextEdit {
+        TextField {
             id: textFieldConsole
-            textFormat: TextEdit.RichText
             text: qsTr("")
             visible: !consmode
             height: consmode ? 0 : 46
@@ -67,6 +66,8 @@ Page {
             id: comboBoxAppend
             width: 95
             textRole: "text"
+            visible: !consmode
+            height: consmode ? 0 : 46
             model: ListModel {
 
                 id: cbParItems
@@ -79,6 +80,8 @@ Page {
 
         Switch {
             id: switchHex
+            visible: !consmode
+            height: consmode ? 0 : 46
             text: qsTr("HEX")
         }
 
