@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>Console.qml</file>
+        <file>ConsoleForm.ui.qml</file>
+        <file>Config.qml</file>
+        <file>ConfigForm.ui.qml</file>
+        <file>Utilidades.qml</file>
+        <file>UtilidadesForm.ui.qml</file>
+    </qresource>
+</RCC>
