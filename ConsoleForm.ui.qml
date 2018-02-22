@@ -17,26 +17,10 @@ Page {
     property bool localEcho: false
     property bool consmode: false
     property bool hex: false
-    property alias scrollViewConsole: scrollViewConsole
-    property alias textAreaConsole: textAreaConsole
+    //property alias scrollViewConsole: scrollViewConsole
+    //property alias textAreaConsole: textAreaConsole
+    property alias flowConsole: flowConsole
 
-    ScrollView {
-        id: scrollViewConsole
-        anchors.topMargin: 10
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.bottom: flowConsole.top
-        anchors.bottomMargin: 10
-        anchors.top: parent.top
-        TextArea {
-            id: textAreaConsole
-            text: qsTr("")
-            wrapMode: Text.WordWrap
-            readOnly: true
-        }
-    }
 
     Flow {
         id: flowConsole
@@ -51,6 +35,7 @@ Page {
 
         TextField {
             id: textFieldConsole
+            selectByMouse: true
             text: qsTr("")
             visible: !consmode
             height: consmode ? 0 : 46
