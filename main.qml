@@ -69,9 +69,10 @@ ApplicationWindow {
 
     QlChannelSerial {
         id: serial
-        onReadyRead: {
-            var msg = readBytes()
+        onReadyReadSignal: {
+            var msg = getl()
             cons.sendText(msg)
+            dell()
         }
     }
     Console{

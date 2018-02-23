@@ -22,11 +22,12 @@ class QlChannelSerial : public QlChannel {
         Q_INVOKABLE virtual void close();
         Q_INVOKABLE virtual bool isOpen();
         Q_INVOKABLE virtual QString name();
-
+        Q_INVOKABLE virtual QList<int> readBytes();
         Q_INVOKABLE virtual QString param(const QString &name);
         Q_INVOKABLE virtual bool paramSet(const QString &name, const QString &value);
+        Q_INVOKABLE virtual QList<int> getl();
+        Q_INVOKABLE virtual void dell();
 
-        Q_INVOKABLE virtual QList<int> readBytes();
         Q_INVOKABLE virtual QString readText();
         Q_INVOKABLE virtual QString bytes2String(QList<int> bytes);
         Q_INVOKABLE virtual qint64 writeBytes(const QList<int> &b);
@@ -36,12 +37,16 @@ class QlChannelSerial : public QlChannel {
         Q_INVOKABLE virtual qint64 bytesAvailable();
 
         Q_INVOKABLE virtual void waitms(long ms);
-
+private slots:
+        void readBytesSlot();
+private:
+         QList<int> *l;
 	protected:
 		QSerialPort *port_;
 		bool open_;
 signals:
         void readyRead();
+        void readyReadSignal();
 };
 
 #endif

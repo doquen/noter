@@ -6,14 +6,16 @@ QlChannelSerial::QlChannelSerial() : QlChannel() {
     port_ = new QSerialPort();
     open_ = false;
     params_ << "baud" << "bauds" << "bits" << "parity" << "stops" << "flow";
-    connect(port_,SIGNAL(readyRead()),this,SIGNAL(readyRead()));
+    l = new QList<int>;
+    connect(port_,SIGNAL(readyRead()),this,SLOT(readBytesSlot()));
 }
 
 QlChannelSerial::QlChannelSerial(QObject* parent) : QlChannel(parent) {
     port_ = new QSerialPort();
     open_ = false;
     params_ << "baud" << "bauds" << "bits" << "parity" << "stops" << "flow";
-    connect(port_,SIGNAL(readyRead()),this,SIGNAL(readyRead()));
+    l = new QList<int>;
+    connect(port_,SIGNAL(readyRead()),this,SLOT(readyBytesSlot()));
 }
 
 QStringList QlChannelSerial::channels() {
@@ -110,6 +112,25 @@ QList<int> QlChannelSerial::readBytes() {
         } while(port_->waitForReadyRead(10));
     }
     return *l;
+}
+
+void QlChannelSerial::readBytesSlot() {
+    if (isOpen() && port_->bytesAvailable()){
+        do {
+            QByteArray buf = port_->readAll();
+            for (int i=0; i<buf.size(); i++) l->append((unsigned char)buf.at(i));
+            //QThread::sleep(5);
+        } while(port_->waitForReadyRead(10));
+    }
+    readyReadSignal();
+}
+
+QList<int> QlChannelSerial::getl(){
+    return *l;
+}
+
+void QlChannelSerial::dell(){
+    l->clear();
 }
 
 QString QlChannelSerial::readText(){
