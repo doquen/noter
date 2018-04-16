@@ -44,11 +44,11 @@ ConsoleForm {
                         serial.writeString("[C")
                         break
                     case Qt.Key_Tab:
-                        serial.writeString("H")
+                        serial.writeString("\t")
+                        console.log("tab")
                         break
                     default:
                         if (textAreaConsole.activeFocus) {
-
                             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
                                 textAreaConsole.myCursorPosition = textAreaConsole.text.length
                             if(serial.isOpen){
@@ -116,7 +116,7 @@ ConsoleForm {
 
         if(!hex){
             var msg2 = serial.bytes2String(msg)
-            var aux
+            var aux = 0
             while (msg.length > 0){
                 switch(msg[0]){
                 case 0x08:
