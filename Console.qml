@@ -2,6 +2,18 @@ import QtQuick 2.4
 import QtQuick.Controls 2.2
 
 ConsoleForm {
+    clearButton.onClicked:{
+
+        if (consmode && !hex){
+            var currentText = textAreaConsole.text.split("\n")
+            textAreaConsole.clear()
+            textAreaConsole.text = currentText[currentText.length-1]
+            textAreaConsole.myCursorPosition = textAreaConsole.text.length
+        }else{
+            textAreaConsole.clear()
+            textAreaConsole.myCursorPosition = textAreaConsole.text.length
+        }
+    }
     ScrollView {
         id: scrollViewConsole
         anchors.topMargin: 10
@@ -104,7 +116,7 @@ ConsoleForm {
             }
         }
         //if(hex)
-            msg = msg.split("").map(function(x) {return Number(x.charCodeAt(0))})
+        msg = msg.split("").map(function(x) {return Number(x.charCodeAt(0))})
         if(echo)
             sendText(msg)
     }

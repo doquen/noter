@@ -1,4 +1,4 @@
-import QtQuick 2.4
+import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.0
@@ -11,6 +11,7 @@ Page {
     property alias comboBoxAppend: comboBoxAppend
     property alias textFieldConsole: textFieldConsole
     property alias buttonEnviar: buttonEnviar
+    property alias clearButton: clearButton
     title: "Terminal"
 
     anchors.fill: parent
@@ -21,6 +22,14 @@ Page {
     //property alias textAreaConsole: textAreaConsole
     property alias flowConsole: flowConsole
 
+    RoundButton{
+        id: clearButton
+        icon.source: "limpiar.png"
+        anchors.right: parent.right
+        hoverEnabled: true
+        opacity: hovered ? 1 : 0.2
+        z:1
+     }
 
     Flow {
         id: flowConsole
@@ -32,6 +41,7 @@ Page {
         anchors.leftMargin: 10
         anchors.right: parent.right
         anchors.rightMargin: 10
+
 
         TextField {
             id: textFieldConsole
@@ -45,6 +55,8 @@ Page {
                                                switchHex.width -
                                                buttonEnviar.width -
                                                3*flowConsole.spacing
+
+
         }
 
         ComboBox {
@@ -69,7 +81,6 @@ Page {
             height: consmode ? 0 : 46
             text: qsTr("HEX")
         }
-
         Button {
             id: buttonEnviar
             text: qsTr("Enviar")
