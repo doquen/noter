@@ -29,6 +29,7 @@ Page {
         hoverEnabled: true
         opacity: hovered ? 1 : 0.2
         z:1
+
      }
 
     Flow {
