@@ -3,22 +3,28 @@ import QtQuick 2.4
 ConfigForm {
 
     Component.onCompleted: {
-        comboPuerto.model = serial.channels()
+        var channels = serial.channels()
+        channels.push("Otro")
+        comboPuerto.model = channels
     }
     onVisibleChanged: {
-        comboPuerto.model = serial.channels()
+        var channels = serial.channels()
+        channels.push("Otro")
+        comboPuerto.model = channels
     }
 
     comboPuerto.onCurrentIndexChanged: {
         updatePorts()
     }
+    comboPuerto.onEditTextChanged: updatePorts()
 
     okButton.onPressed: {
         if(serial.isOpen())
             serial.close()
 
-
-        serial.open(serial.channels()[comboPuerto.currentIndex])
+        var channel = comboPuerto.currentText == "Otro" ?
+                    textCustomPort.text : comboPuerto.currentText
+        serial.open(channel)
         if(serial.isOpen()){
             serial.paramSet('baud',comboBaudios.currentText)
             serial.paramSet('bits',comboBits.currentText)
@@ -35,7 +41,7 @@ ConfigForm {
         window.echo = checkBoxEcho.checked
     }
     function updatePorts(){
-        var info = serial.channelInfo(comboPuerto.textAt(comboPuerto.currentIndex))
+        var info = serial.channelInfo(comboPuerto.currentText)
         label_port_desc.text = "Descripción: "+ info[0]
         label_port_fab.text = "Fabricante: " + info[1]
         label_port_ser.text = "N° de Serie: " + info[2]

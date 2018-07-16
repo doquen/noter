@@ -7,6 +7,7 @@ Page {
     id: page
     width: 700
     height: 700
+    property alias textCustomPort: textCustomPort
     property alias checkBoxHex: checkBoxHex
     property alias checkBoxConsola: checkBoxConsola
     property alias checkBoxEcho: checkBoxEcho
@@ -55,13 +56,14 @@ Page {
 
                 ComboBox {
                     id: comboPuerto
+                    flat: false
                     anchors.top: parent.top
                     anchors.topMargin: 5
                     anchors.left: label.right
                     anchors.leftMargin: 5
                     anchors.right: parent.right
                     anchors.rightMargin: 5
-                    editable: true
+                    editable: false
                 }
 
                 Label {
@@ -74,6 +76,7 @@ Page {
                     anchors.top: comboPuerto.bottom
                     anchors.topMargin: 15
                     elide: Text.ElideRight
+                    visible: comboPuerto.currentText != "Otro"
                 }
 
                 Label {
@@ -87,6 +90,7 @@ Page {
                     anchors.leftMargin: 5
                     anchors.topMargin: 15
                     elide: Text.ElideRight
+                    visible: comboPuerto.currentText != "Otro"
                 }
 
                 Label {
@@ -170,6 +174,20 @@ Page {
                     anchors.leftMargin: 5
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 5
+                }
+
+                TextField {
+                    id: textCustomPort
+                    y: 68
+                    text: qsTr("")
+                    placeholderText: qsTr("Ingrese el puerto manualmente")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    anchors.right: parent.right
+                    anchors.rightMargin: 5
+                    anchors.top: comboPuerto.bottom
+                    anchors.topMargin: 15
+                    visible: comboPuerto.currentText == "Otro"
                 }
 
             }
@@ -319,3 +337,8 @@ Page {
         }
     }
 }
+
+/*##^## Designer {
+    D{i:38;anchors_width:160;anchors_x:181;anchors_y:0}
+}
+ ##^##*/

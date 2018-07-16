@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QFileInfo>
 #include <QIcon>
@@ -12,7 +13,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     QFileInfo fi(app.applicationDirPath() + "/../share/icons/hicolor/256x256/apps/NoTer.png");
-    QGuiApplication::setWindowIcon(QIcon(fi.absoluteFilePath()));
+    QApplication::setWindowIcon(QIcon(fi.absoluteFilePath()));
     qmlRegisterType<QlChannelSerial>("QlChannelSerial",1,0,"QlChannelSerial");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
