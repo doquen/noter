@@ -57,7 +57,6 @@ ConsoleForm {
                         break
                     case Qt.Key_Tab:
                         serial.writeString("\t")
-                        console.log("tab")
                         break
                     default:
                         if (textAreaConsole.activeFocus) {
@@ -112,7 +111,7 @@ ConsoleForm {
                     serial.writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
             }
             else {
-                toast.show("Error en caracteres Hexadecimales.",2000,'red')
+                toast.show(qsTr("Error en caracteres Hexadecimales."),2000,'red')
             }
         }
         //if(hex)

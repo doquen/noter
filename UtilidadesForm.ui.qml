@@ -10,7 +10,7 @@ Page {
     property alias textAreaText: textAreaText
     property alias textAreaHexa: textAreaHexa
     anchors.fill: parent
-    title: "Utilidades"
+    title: qsTr("Utilidades")
     Flickable{
         anchors.fill: parent
         contentHeight: groupBox.height + groupBox1.height + 30

@@ -4,12 +4,12 @@ ConfigForm {
 
     Component.onCompleted: {
         var channels = serial.channels()
-        channels.push("Otro")
+        channels.push(qsTr("Otro"))
         comboPuerto.model = channels
     }
     onVisibleChanged: {
         var channels = serial.channels()
-        channels.push("Otro")
+        channels.push(qsTr("Otro"))
         comboPuerto.model = channels
     }
 
@@ -22,7 +22,7 @@ ConfigForm {
         if(serial.isOpen())
             serial.close()
 
-        var channel = comboPuerto.currentText == "Otro" ?
+        var channel = comboPuerto.currentText === qsTr("Otro") ?
                     textCustomPort.text : comboPuerto.currentText
         serial.open(channel)
         if(serial.isOpen()){
@@ -31,10 +31,10 @@ ConfigForm {
             serial.paramSet('flow',comboFlujo.model.get(comboFlujo.currentIndex).value)
             serial.paramSet('stops',comboStop.currentText)
             serial.paramSet('parity',comboPar.model.get(comboPar.currentIndex).value)
-            toast.show("Conexión Exitosa",2000,'green')
+            toast.show(qsTr("Conexión Exitosa"),2000,'green')
         }
         else{
-            toast.show("Error de Conexión",2000,'red')
+            toast.show(qsTr("Error de Conexión"),2000,'red')
         }
     }
     checkBoxEcho.onCheckStateChanged: {
@@ -42,11 +42,11 @@ ConfigForm {
     }
     function updatePorts(){
         var info = serial.channelInfo(comboPuerto.currentText)
-        label_port_desc.text = "Descripción: "+ info[0]
-        label_port_fab.text = "Fabricante: " + info[1]
-        label_port_ser.text = "N° de Serie: " + info[2]
-        label_port_ub.text = "Ubicación: " + info[3]
-        label_port_vid.text = "VID: " + info[4]
-        label_port_pid.text = "PID: " + info[5]
+        label_port_desc.text = qsTr("Descripción: ")+ info[0]
+        label_port_fab.text = qsTr("Fabricante: ") + info[1]
+        label_port_ser.text = qsTr("N° de Serie: ") + info[2]
+        label_port_ub.text = qsTr("Ubicación: ") + info[3]
+        label_port_vid.text = qsTr("VID: ") + info[4]
+        label_port_pid.text = qsTr("PID: ") + info[5]
     }
 }

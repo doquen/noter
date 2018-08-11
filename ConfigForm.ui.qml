@@ -27,24 +27,23 @@ Page {
     property alias flow1: flow1
     property alias scrollView: scrollView
     anchors.fill: parent
-    title: "Configuración"
-
-
+    title: qsTr("Configuración")
 
     ScrollView {
         id: scrollView
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        height: parent.height -20
-        width: parent.width -20
+        height: parent.height - 20
+        width: parent.width - 20
         Flow {
             id: flow1
             spacing: 10
-            width:  scrollView.width
+            width: scrollView.width
 
             GroupBox {
                 id: groupBox
-                width: (parent.width > 600) ? parent.width/2 - parent.spacing : parent.width - parent.spacing
+                width: (parent.width > 600) ? parent.width / 2 - parent.spacing : parent.width
+                                              - parent.spacing
                 height: 370
                 title: qsTr("Puerto Serie:")
 
@@ -76,7 +75,7 @@ Page {
                     anchors.top: comboPuerto.bottom
                     anchors.topMargin: 15
                     elide: Text.ElideRight
-                    visible: comboPuerto.currentText != "Otro"
+                    visible: comboPuerto.currentText !== qsTr("Otro")
                 }
 
                 Label {
@@ -90,7 +89,7 @@ Page {
                     anchors.leftMargin: 5
                     anchors.topMargin: 15
                     elide: Text.ElideRight
-                    visible: comboPuerto.currentText != "Otro"
+                    visible: comboPuerto.currentText !== qsTr("Otro")
                 }
 
                 Label {
@@ -153,7 +152,6 @@ Page {
                     anchors.bottomMargin: 5
                     anchors.right: parent.right
                     anchors.rightMargin: 5
-
                 }
 
                 CheckBox {
@@ -187,16 +185,16 @@ Page {
                     anchors.rightMargin: 5
                     anchors.top: comboPuerto.bottom
                     anchors.topMargin: 15
-                    visible: comboPuerto.currentText == "Otro"
+                    visible: comboPuerto.currentText === qsTr("Otro")
                 }
-
             }
 
             GroupBox {
                 id: groupBox1
                 height: 370
                 title: qsTr("Parámetros:")
-                width: (parent.width > 600) ? parent.width/2-parent.spacing : parent.width - parent.spacing
+                width: (parent.width > 600) ? parent.width / 2 - parent.spacing : parent.width
+                                              - parent.spacing
                 ComboBox {
                     id: comboBaudios
                     anchors.top: parent.top
@@ -240,7 +238,6 @@ Page {
                     anchors.topMargin: 5
                     model: ["5", "6", "7", "8"]
                     currentIndex: 3
-
                 }
 
                 Label {
@@ -265,11 +262,26 @@ Page {
                     model: ListModel {
 
                         id: cbParItems
-                        ListElement { text: "Ninguna"; value: "n" }
-                        ListElement { text: "Par"; value: "e" }
-                        ListElement { text: "Impar"; value: "o" }
-                        ListElement { text: "Marca"; value:"m"}
-                        ListElement { text: "Espacio"; value:"s"}
+                        ListElement {
+                            text: qsTr("Ninguna")
+                            value: "n"
+                        }
+                        ListElement {
+                            text: qsTr("Par")
+                            value: "e"
+                        }
+                        ListElement {
+                            text: qsTr("Impar")
+                            value: "o"
+                        }
+                        ListElement {
+                            text: qsTr("Marca")
+                            value: "m"
+                        }
+                        ListElement {
+                            text: qsTr("Espacio")
+                            value: "s"
+                        }
                     }
                 }
 
@@ -315,11 +327,19 @@ Page {
                     textRole: "text"
                     model: ListModel {
                         id: cbFlowItems
-                        ListElement { text: "Ninguno"; value: "n" }
-                        ListElement { text: "RTS/CTS"; value: "r" }
-                        ListElement { text: "XON/XOFF"; value: "x" }
+                        ListElement {
+                            text: qsTr("Ninguno")
+                            value: "n"
+                        }
+                        ListElement {
+                            text: "RTS/CTS"
+                            value: "r"
+                        }
+                        ListElement {
+                            text: "XON/XOFF"
+                            value: "x"
+                        }
                     }
-
                 }
 
                 Button {
@@ -331,14 +351,7 @@ Page {
                     anchors.top: comboFlujo.bottom
                     anchors.topMargin: 10
                 }
-
             }
-
         }
     }
 }
-
-/*##^## Designer {
-    D{i:38;anchors_width:160;anchors_x:181;anchors_y:0}
-}
- ##^##*/

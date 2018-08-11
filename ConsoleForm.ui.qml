@@ -18,8 +18,6 @@ Page {
     property bool localEcho: false
     property bool consmode: false
     property bool hex: false
-    //property alias scrollViewConsole: scrollViewConsole
-    //property alias textAreaConsole: textAreaConsole
     property alias flowConsole: flowConsole
 
     RoundButton{
