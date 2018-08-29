@@ -35,7 +35,7 @@ ConsoleForm {
             Component.onCompleted: {
                 cursorPosition = 0
             }
-
+            // TODO: solo scrollear cuando no se está al final del texto
             onMyCursorPositionChanged: {
                 cursorPosition = myCursorPosition
             }
