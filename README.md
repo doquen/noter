@@ -32,6 +32,10 @@ qmake && make
 
 Qt 5.x or above is needed, with QtQuick controls 2.x.
 
+## Downloads
+
+You can download binaries for Linux or Windows from [here](https://github.com/PabloF7/noter/releases/). They are supposed to autodetect your language if it's English or Spanish.
+
 ## Help Wanted
 
 If you want to help a not very experienced programmer like me and make this project better, pleas contact me.
