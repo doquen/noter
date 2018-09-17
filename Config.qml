@@ -19,23 +19,7 @@ ConfigForm {
     comboPuerto.onEditTextChanged: updatePorts()
 
     okButton.onPressed: {
-        if(serial.isOpen())
-            serial.close()
-
-        var channel = comboPuerto.currentText === qsTr("Otro") ?
-                    textCustomPort.text : comboPuerto.currentText
-        serial.open(channel)
-        if(serial.isOpen()){
-            serial.paramSet('baud',comboBaudios.currentText)
-            serial.paramSet('bits',comboBits.currentText)
-            serial.paramSet('flow',comboFlujo.model.get(comboFlujo.currentIndex).value)
-            serial.paramSet('stops',comboStop.currentText)
-            serial.paramSet('parity',comboPar.model.get(comboPar.currentIndex).value)
-            toast.show(qsTr("Conexión Exitosa"),2000,'green')
-        }
-        else{
-            toast.show(qsTr("Error de Conexión"),2000,'red')
-        }
+        connectPort()
     }
     checkBoxEcho.onCheckStateChanged: {
         window.echo = checkBoxEcho.checked
@@ -48,5 +32,34 @@ ConfigForm {
         label_port_ub.text = qsTr("Ubicación: ") + info[3]
         label_port_vid.text = qsTr("VID: ") + info[4]
         label_port_pid.text = qsTr("PID: ") + info[5]
+    }
+    function connectPort(){
+        if(serial.isOpen()){
+            serial.close()
+            if(!serial.isOpen()){
+                okButton.text = qsTr("Conectar")
+                toast.show(qsTr("Desconexión Exitosa"),2000,'green')
+            }else{
+                toast.show(qsTr("Error de Desconexión"),2000,'red')
+            }
+        }else{
+
+            var channel = comboPuerto.currentText === qsTr("Otro") ?
+                        textCustomPort.text : comboPuerto.currentText
+            serial.open(channel)
+            if(serial.isOpen()){
+                serial.paramSet('baud',comboBaudios.currentText)
+                serial.paramSet('bits',comboBits.currentText)
+                serial.paramSet('flow',comboFlujo.model.get(comboFlujo.currentIndex).value)
+                serial.paramSet('stops',comboStop.currentText)
+                serial.paramSet('parity',comboPar.model.get(comboPar.currentIndex).value)
+                toast.show(qsTr("Conexión Exitosa"),2000,'green')
+                okButton.text = qsTr("Desconectar")
+            }
+            else{
+                okButton.text = qsTr("Conectar")
+                toast.show(qsTr("Error de Conexión"),2000,'red')
+            }
+        }
     }
 }

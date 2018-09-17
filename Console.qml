@@ -1,19 +1,29 @@
-import QtQuick 2.4
+import QtQuick 2.11
 import QtQuick.Controls 2.2
 
 ConsoleForm {
-    clearButton.onClicked:{
 
-        if (consmode && !hex){
-            var currentText = textAreaConsole.text.split("\n")
-            textAreaConsole.clear()
-            textAreaConsole.text = currentText[currentText.length-1]
-            textAreaConsole.myCursorPosition = textAreaConsole.text.length
-        }else{
-            textAreaConsole.clear()
-            textAreaConsole.myCursorPosition = textAreaConsole.text.length
-        }
+    Shortcut {
+        sequence: "Alt+C"
+        onActivated: config.connectPort()
     }
+    Shortcut {
+        sequence: "Ctrl+L"
+        onActivated: clearText()
+    }
+    Shortcut {
+        sequence: "Ctrl+E,Ctrl+W"
+        onActivated: edit.wrapMode = TextEdit.Wrap
+    }
+
+    clearButton.onClicked:{
+        clearText()
+    }
+    connectButton.icon.source: serial.openned ? "connect.png" : "disconnect.png"
+    connectButton.onPressed: {
+        config.connectPort()
+    }
+
     ScrollView {
         id: scrollViewConsole
         anchors.topMargin: 10
@@ -181,5 +191,16 @@ ConsoleForm {
         textAreaConsole.insert(textAreaConsole.myCursorPosition,msg)
         textAreaConsole.myCursorPosition += msg.length
     }
+    function clearText(){
 
+        if (consmode && !hex){
+            var currentText = textAreaConsole.text.split("\n")
+            textAreaConsole.clear()
+            textAreaConsole.text = currentText[currentText.length-1]
+            textAreaConsole.myCursorPosition = textAreaConsole.text.length
+        }else{
+            textAreaConsole.clear()
+            textAreaConsole.myCursorPosition = textAreaConsole.text.length
+        }
+    }
 }

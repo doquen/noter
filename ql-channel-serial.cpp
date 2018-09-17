@@ -48,6 +48,7 @@ bool QlChannelSerial::open(const QString &name) {
     port_->setPortName(name);
     open_ = port_->open(QIODevice::ReadWrite);
     if (open_) name_ = name; else name_ = QString::fromLatin1("");
+    connected(open_);
     return open_;
 }
 
@@ -55,6 +56,7 @@ void QlChannelSerial::close() {
     if (isOpen()){
         port_->close();
         open_ = false;
+        connected(open_);
     }
 }
 

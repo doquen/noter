@@ -11,5 +11,7 @@
         <file>Toast.qml</file>
         <file>ToastManager.qml</file>
         <file>limpiar.png</file>
+        <file>connect.png</file>
+        <file>disconnect.png</file>
     </qresource>
 </RCC>

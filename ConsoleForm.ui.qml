@@ -7,6 +7,7 @@ Page {
     id: item1
     width: 400
     height: 400
+    property alias connectButton: connectButton
     property alias switchHex: switchHex
     property alias comboBoxAppend: comboBoxAppend
     property alias textFieldConsole: textFieldConsole
@@ -28,7 +29,17 @@ Page {
         opacity: hovered ? 1 : 0.2
         z:1
 
-     }
+    }
+    RoundButton{
+        id: connectButton
+        icon.source: "connect.png"
+        anchors.right: parent.right
+        anchors.top: clearButton.bottom
+        hoverEnabled: true
+        opacity: hovered ? 1 : 0.2
+        z:1
+
+    }
 
     Flow {
         id: flowConsole

@@ -345,7 +345,7 @@ Page {
                 Button {
                     id: okButton
                     x: 268
-                    text: qsTr("OK")
+                    text: qsTr("Conectar")
                     anchors.right: comboFlujo.right
                     anchors.rightMargin: 0
                     anchors.top: comboFlujo.bottom

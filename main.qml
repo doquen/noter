@@ -68,15 +68,23 @@ ApplicationWindow {
     }
 
     QlChannelSerial {
+        property bool openned: false
         id: serial
         onReadyReadSignal: {
             var msg = getl()
             cons.sendText(msg)
             dell()
         }
+        onConnected: {
+            openned = conn
+        }
     }
     Console{
+        property string connected
+        connected: serial.openned ? qsTr("Conectado") : qsTr("Desconectado")
         id: cons
+        title: "Terminal - " + config.comboPuerto.currentText + ", "
+               + config.comboBaudios.currentText + ", " + connected
         consmode: config.checkBoxConsola.checked
         hex: config.checkBoxHex.checked
         localEcho: config.checkBoxEcho.checked

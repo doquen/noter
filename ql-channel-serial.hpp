@@ -47,6 +47,7 @@ private:
 signals:
         void readyRead();
         void readyReadSignal();
+        void connected(bool conn);
 };
 
 #endif
