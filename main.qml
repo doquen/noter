@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QlChannelSerial 1.0
+import Ssh 1.0
 
 ApplicationWindow {
 
@@ -79,6 +80,10 @@ ApplicationWindow {
             openned = conn
         }
     }
+    Ssh {
+        id: ssh
+    }
+
     Console{
         property string connected
         connected: serial.openned ? qsTr("Conectado") : qsTr("Desconectado")
@@ -101,6 +106,9 @@ ApplicationWindow {
 
     ToastManager{
         id: toast
+    }
+    Component.onCompleted: {
+        ssh.writeData("ls\n")
     }
 }
 

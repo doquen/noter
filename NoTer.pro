@@ -1,4 +1,4 @@
-QT += quick serialport widgets core
+QT += quick serialport widgets core concurrent
 CONFIG += c++14
 
 # The following define makes your compiler emit warnings if you use
@@ -14,7 +14,8 @@ ICON = NoTer.ico
 
 SOURCES += main.cpp \
     ql-channel.cpp \
-    ql-channel-serial.cpp
+    ql-channel-serial.cpp \
+    ssh.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,6 +34,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ql-channel.hpp \
-    ql-channel-serial.hpp
+    ql-channel-serial.hpp \
+    ssh.h
 
 DISTFILES +=
+
+LIBS += -lssh
