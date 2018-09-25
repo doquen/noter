@@ -6,11 +6,12 @@ import Ssh 1.0
 ApplicationWindow {
 
     property bool echo: false
+    property string connection: "serie"
 
     id: window
     visible: true
     width: 640
-    height: 480
+    height: 500
     title: qsTr("NoTer")
 
     header: ToolBar {
@@ -82,6 +83,10 @@ ApplicationWindow {
     }
     Ssh {
         id: ssh
+        onReadyRead: {
+            var msg = getData()
+            cons.sendText(msg)
+        }
     }
 
     Console{
@@ -106,9 +111,6 @@ ApplicationWindow {
 
     ToastManager{
         id: toast
-    }
-    Component.onCompleted: {
-        ssh.writeData("ls\n")
     }
 }
 

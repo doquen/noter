@@ -7,6 +7,13 @@ Page {
     id: page
     width: 700
     height: 700
+    property alias spinBoxPortSsh: spinBoxPortSsh
+    property alias textFieldHostSsh: textFieldHostSsh
+    property alias textFieldUserSsh: textFieldUserSsh
+    property alias textFieldPassSsh: textFieldPassSsh
+    property alias okSshButton: okSshButton
+    property alias radioButtonSsh: radioButtonSsh
+    property alias radioButtonSerie: radioButtonSerie
     property alias textCustomPort: textCustomPort
     property alias checkBoxHex: checkBoxHex
     property alias checkBoxConsola: checkBoxConsola
@@ -46,7 +53,7 @@ Page {
                                               - parent.spacing
                 height: 370
                 title: qsTr("Puerto Serie:")
-
+                visible: radioButtonSerie.checked
                 Label {
                     id: label
                     text: qsTr("Puerto:")
@@ -195,6 +202,7 @@ Page {
                 title: qsTr("Parámetros:")
                 width: (parent.width > 600) ? parent.width / 2 - parent.spacing : parent.width
                                               - parent.spacing
+                visible: radioButtonSerie.checked
                 ComboBox {
                     id: comboBaudios
                     anchors.top: parent.top
@@ -345,6 +353,7 @@ Page {
                 Button {
                     id: okButton
                     x: 268
+                    width: comboFlujo.width
                     text: qsTr("Conectar")
                     anchors.right: comboFlujo.right
                     anchors.rightMargin: 0
@@ -352,6 +361,147 @@ Page {
                     anchors.topMargin: 10
                 }
             }
+
+            GroupBox {
+                id: groupBox2
+                visible: radioButtonSsh.checked
+                width: (parent.width > 600) ? parent.width / 2 - parent.spacing : parent.width
+                                              - parent.spacing
+                height: 370
+                title: qsTr("Conexión SSH")
+
+                Label {
+                    id: label6
+                    y: -66
+                    width: 80
+                    text: qsTr("Host:")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    anchors.verticalCenter: textFieldHostSsh.verticalCenter
+                }
+
+                TextField {
+                    id: textFieldHostSsh
+                    placeholderText: "Ingrese la dirección del Host"
+                    anchors.left: label6.right
+                    anchors.leftMargin: 5
+                    anchors.top: parent.top
+                    anchors.topMargin: 5
+                    anchors.right: parent.right
+                    anchors.rightMargin: 5
+                }
+
+                Label {
+                    id: label7
+                    x: 9
+                    y: -57
+                    width: 80
+                    text: qsTr("Puerto:")
+                    anchors.verticalCenter: spinBoxPortSsh.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                }
+
+                SpinBox {
+                    id: spinBoxPortSsh
+                    x: 9
+                    y: 9
+                    to: 9999
+                    anchors.top: textFieldHostSsh.bottom
+                    editable: true
+                    anchors.rightMargin: 5
+                    anchors.left: label7.right
+                    anchors.topMargin: 5
+                    anchors.leftMargin: 5
+                    anchors.right: parent.right
+                }
+            }
+
+            GroupBox {
+                id: groupBox3
+                width: (parent.width > 600) ? parent.width / 2 - parent.spacing : parent.width
+                                              - parent.spacing
+                height: 370
+                visible: radioButtonSsh.checked
+                Label {
+                    id: label10
+                    x: 9
+                    y: -57
+                    width: 80
+                    text: qsTr("Usuario:")
+                    anchors.verticalCenter: textFieldUserSsh.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                }
+
+                TextField {
+                    id: textFieldUserSsh
+                    x: 9
+                    placeholderText: "Ingrese el nombre de Usuario"
+                    anchors.top: parent.top
+                    anchors.rightMargin: 5
+                    anchors.left: label10.right
+                    anchors.topMargin: 5
+                    anchors.leftMargin: 5
+                    anchors.right: parent.right
+                }
+
+                Label {
+                    id: label11
+                    x: 5
+                    y: -61
+                    width: 80
+                    text: qsTr("Contraseña:")
+                    anchors.verticalCenter: textFieldPassSsh.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                }
+
+                TextField {
+                    id: textFieldPassSsh
+                    x: 5
+                    y: 5
+                    placeholderText: "Ingrese la contraseña"
+                    anchors.top: textFieldUserSsh.bottom
+                    anchors.rightMargin: 5
+                    echoMode: TextInput.Password
+                    anchors.left: label11.right
+                    anchors.topMargin: 5
+                    anchors.leftMargin: 5
+                    anchors.right: parent.right
+                }
+
+                Button {
+                    id: okSshButton
+                    x: 268
+                    width: textFieldPassSsh.width
+                    text: qsTr("Conectar")
+                    anchors.bottomMargin: 10
+                    anchors.bottom: parent.bottom
+                    anchors.topMargin: 10
+                    anchors.right: parent.right
+                }
+                title: qsTr("Conexión SSH")
+            }
+
+            RadioButton {
+                id: radioButtonSerie
+                text: qsTr("Serie")
+                checked: true
+            }
+
+            RadioButton {
+                id: radioButtonSsh
+                text: qsTr("SSH")
+            }
+
+
+
         }
     }
 }
+
+/*##^## Designer {
+    D{i:43;anchors_x:"-12";anchors_y:"-66"}D{i:46;anchors_x:"-12";anchors_y:"-66"}
+}
+ ##^##*/

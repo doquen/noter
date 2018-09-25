@@ -140,6 +140,10 @@ ConsoleForm {
             var aux = 0
             while (msg.length > 0){
                 switch(msg[0]){
+                case 0x0d:
+                    if (Qt.platform.os == "linux")
+                        msg.shift()
+                    break
                 case 0x08:
                     moveCursor(-1)
                     msg.shift()

@@ -21,6 +21,24 @@ ConfigForm {
     okButton.onPressed: {
         connectPort()
     }
+    okSshButton.onPressed: {
+        if (!ssh.isOpen()){
+            connectSsh()
+            okSshButton.text = qsTr("Desconectar")
+            if (ssh.isOpen())
+                toast.show(qsTr("Conexión Exitosa"),2000,'green')
+            else
+                toast.show(qsTr("Error de Desconexión"),2000,'red')
+        }else{
+            ssh.close()
+            okSshButton.text = qsTr("Conectar")
+            if (ssh.isOpen())
+                toast.show(qsTr("Error de Desconexión"),2000,'red')
+            else
+                toast.show(qsTr("Desconexión Exitosa"),2000,'green')
+        }
+    }
+
     checkBoxEcho.onCheckStateChanged: {
         window.echo = checkBoxEcho.checked
     }
@@ -61,5 +79,12 @@ ConfigForm {
                 toast.show(qsTr("Error de Conexión"),2000,'red')
             }
         }
+    }
+    function connectSsh(){
+        ssh.paramSet("host",textFieldHostSsh.text)
+        ssh.paramSet("user",textFieldUserSsh.text)
+        ssh.paramSet("port",spinBoxPortSsh.value)
+        ssh.setPassword(textFieldPassSsh.text)
+        ssh.open()
     }
 }
