@@ -3,15 +3,17 @@
 #include <QThreadPool>
 #include <QDebug>
 #include <QThread>
+#include <QProcess>
 
 Ssh::Ssh(QObject *parent) : QObject(parent)
 {
 
     port = 22;
     rcvBuffer = new QByteArray();
-
+    setOpened(false);
     reading = false;
     session = ssh_new();
+    fileToParse = new QFile("parse");
     //    int rc;
     //    ssh_options_set(session,SSH_OPTIONS_HOST,"localhost");
     //    ssh_options_set(session, SSH_OPTIONS_USER, "pablo" );
@@ -30,17 +32,29 @@ Ssh::~Ssh(){
         ssh_channel_close(channel);
         ssh_channel_send_eof(channel);
         ssh_channel_free(channel);
+        setOpened(false);
     }
 }
 
-void Ssh::close(){
-    if(ssh_channel_is_open(channel)){
-        ssh_channel_close(channel);
-        ssh_channel_send_eof(channel);
-        ssh_channel_free(channel);
-
-        session = ssh_new();
+void Ssh::setOpened(bool o){
+    if (o != m_opened){
+        m_opened = o;
+        openedChanged();
     }
+}
+
+bool Ssh::opened(){
+    return m_opened;
+}
+
+void Ssh::close(){
+//    if(ssh_channel_is_open(channel)){
+//        ssh_channel_close(channel);
+//        ssh_channel_send_eof(channel);
+//        ssh_channel_free(channel);
+//        setOpened(false);
+//        session = ssh_new();
+//    }
 }
 
 void Ssh::open(){
@@ -51,7 +65,7 @@ void Ssh::open(){
     ssh_channel_request_pty(channel);
     ssh_channel_change_pty_size(channel, 80, 24);
     ssh_channel_request_shell(channel);
-
+    setOpened(true);
     QtConcurrent::run(this,&Ssh::recieveLoop);
 }
 
@@ -60,14 +74,25 @@ void Ssh::setPassword(QString pass){
 }
 
 QList<int> Ssh::getData(){
+    QString parsed;
     QList<int> ret;
     reading = true;
     for (int i=0; i<rcvBuffer->size(); i++) ret.append(static_cast<unsigned char>(rcvBuffer->at(i)));
+    parsed = QString(parseVT100(rcvBuffer));
     rcvBuffer->clear();
     reading = false;
     return ret;
 }
 
+QString Ssh::parseVT100(QByteArray *text){
+    QProcess p;
+    QString parsed;
+    p.start("echo "+QString(text->data())+" | vt100.py");
+    p.waitForFinished(-1);
+    parsed = p.readAllStandardOutput();
+    QFile::remove("parse");
+    return parsed;
+}
 void Ssh::recieveLoop(){
     char buffer[256];
     int nbytes;
@@ -92,9 +117,9 @@ bool Ssh::isOpen(){
 }
 
 void Ssh::writeData(const QString &s){
-    char buffer[256];
-    buffer[0]='l';buffer[1]='s';buffer[2]='\n';
-    ssh_channel_write(channel,buffer,3);
+    QByteArray data;
+    data.append(s);
+    ssh_channel_write(channel,data.data(),static_cast<uint32_t>(data.length()));
 }
 
 void Ssh::paramSet( QString param, QString value){

@@ -13,5 +13,6 @@
         <file>limpiar.png</file>
         <file>connect.png</file>
         <file>disconnect.png</file>
+        <file>vt100.py</file>
     </qresource>
 </RCC>

@@ -33,6 +33,9 @@ Page {
     property alias okButton: okButton
     property alias flow1: flow1
     property alias scrollView: scrollView
+    property alias baudModel: comboBaudios.baudModel
+
+
     anchors.fill: parent
     title: qsTr("Configuración")
 
@@ -205,6 +208,7 @@ Page {
                 visible: radioButtonSerie.checked
                 ComboBox {
                     id: comboBaudios
+                    property alias baudModel: baudModel
                     anchors.top: parent.top
                     anchors.topMargin: 5
                     anchors.right: parent.right
@@ -212,8 +216,16 @@ Page {
                     anchors.left: label5.right
                     anchors.leftMargin: 5
                     editable: true
-                    model: ["9600", "19200", "38400", "115200"]
-                    currentIndex: 3
+                    model: ListModel{
+                        id: baudModel
+                        ListElement{text:"4800"}
+                        ListElement{text:"9600"}
+                        ListElement{text:"19200"}
+                        ListElement{text:"38400"}
+                        ListElement{text:"115200"}
+                        //["4800","9600", "19200", "38400", "115200"]
+                    }
+                    currentIndex: 4
                 }
 
                 Label {
@@ -406,6 +418,7 @@ Page {
                     id: spinBoxPortSsh
                     x: 9
                     y: 9
+                    value: 22
                     to: 9999
                     anchors.top: textFieldHostSsh.bottom
                     editable: true
@@ -502,6 +515,6 @@ Page {
 }
 
 /*##^## Designer {
-    D{i:43;anchors_x:"-12";anchors_y:"-66"}D{i:46;anchors_x:"-12";anchors_y:"-66"}
+    D{i:46;anchors_x:"-12";anchors_y:"-66"}D{i:43;anchors_x:"-12";anchors_y:"-66"}
 }
  ##^##*/

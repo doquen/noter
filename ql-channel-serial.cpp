@@ -153,6 +153,13 @@ QString QlChannelSerial::bytes2String(QList<int> bytes){
     return s;
 }
 
+QList<int> QlChannelSerial::string2Bytes(QString str){
+    QList<int> ret;
+    for (int i=0; i < str.length(); i++)
+        ret.append(str.toStdString().c_str()[i]);
+    return ret;
+}
+
 qint64 QlChannelSerial::writeBytes(const QList<int> &l) {
     qint64 r;
     if (isOpen()){

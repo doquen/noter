@@ -2,10 +2,19 @@ import QtQuick 2.11
 import QtQuick.Controls 2.2
 
 ConsoleForm {
+    property bool opened
+    property string currentText: ""
+
+    opened: config.radioButtonSerie.checked ? serial.openned :
+                                              (config.radioButtonSsh.checked) ? ssh.opened : false
+
+    onCurrentTextChanged: {
+        textAreaConsole.text = currentText
+    }
 
     Shortcut {
         sequence: "Alt+C"
-        onActivated: config.connectPort()
+        onActivated: connect()
     }
     Shortcut {
         sequence: "Ctrl+L"
@@ -19,9 +28,9 @@ ConsoleForm {
     clearButton.onClicked:{
         clearText()
     }
-    connectButton.icon.source: serial.openned ? "connect.png" : "disconnect.png"
+    connectButton.icon.source: opened ? "connect.png" : "disconnect.png"
     connectButton.onPressed: {
-        config.connectPort()
+        connect()
     }
 
     ScrollView {
@@ -34,46 +43,49 @@ ConsoleForm {
         anchors.bottom: flowConsole.top
         anchors.bottomMargin: 10
         anchors.top: parent.top
+
         TextArea {
             id: textAreaConsole
             cursorVisible: true
             selectByMouse: true
-            text: qsTr("")
+            //textFormat: TextEdit.RichText
+            //text: qsTr('<h1>Bienvenido a NoTer</h1>\n<h2>Atajos de Teclado:</h2>\nCTRL+L: Limpiar terminal.<br>ALT+C: Conectar/Desconectar.\n')
             wrapMode: Text.WordWrap
             property int myCursorPosition: 0
+            property int savedCursorPosition: 0
 
             Component.onCompleted: {
                 cursorPosition = 0
             }
             // TODO: solo scrollear cuando no se está al final del texto
             onMyCursorPositionChanged: {
-                cursorPosition = myCursorPosition
+             //   cursorPosition = myCursorPosition
             }
 
             Keys.onPressed: {
                 if(consmode){
                     switch (event.key) {
                     case Qt.Key_Up:
-                        serial.writeString("[A")
+                        writeString("[A")
                         break
                     case Qt.Key_Down:
-                        serial.writeString("[B")
+                        writeString("[B")
                         break
                     case Qt.Key_Left:
-                        serial.writeString("[D")
+                        writeString("[D")
                         break
                     case Qt.Key_Right:
-                        serial.writeString("[C")
+                        writeString("[C")
                         break
                     case Qt.Key_Tab:
-                        serial.writeString("\t")
+                        writeString("\t")
                         break
                     default:
                         if (textAreaConsole.activeFocus) {
                             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
                                 textAreaConsole.myCursorPosition = textAreaConsole.text.length
-                            if(serial.isOpen){
-                                serial.writeString(event.text)
+                            if(opened){
+                                writeString(event.text)
                             }
                             if(localEcho){
                                 var msg = [Number(event.text.charCodeAt(0))]
@@ -95,8 +107,8 @@ ConsoleForm {
     buttonEnviar.onClicked: {
         var msg = textFieldConsole.text
         if(!switchHex.checked){
-            if(serial.isOpen)
-                serial.writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
+            if(opened)
+                writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
         }
         else {
             msg = msg.trim().split(" ")
@@ -117,8 +129,8 @@ ConsoleForm {
                                 return String.fromCharCode(x)
                             }
                             ).join("")
-                if(serial.isOpen)
-                    serial.writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
+                if(opened)
+                    writeString(msg+comboBoxAppend.model.get(comboBoxAppend.currentIndex).value)
             }
             else {
                 toast.show(qsTr("Error en caracteres Hexadecimales."),2000,'red')
@@ -134,11 +146,15 @@ ConsoleForm {
         textAreaConsole.insert(textAreaConsole.text.length,msg+" ")
     }
     function sendText(msg){
-
+        //unparsed += msg;
+        //msg = ssh.parseVT100(msg);
+        //textAreaConsole.text += msg;
+        //textAreaConsole.myCursorPosition = textAreaConsole.text.length
         if(!hex){
             var msg2 = serial.bytes2String(msg)
-            var aux = 0
+            parse_ansi(msg2)
             while (msg.length > 0){
+                var aux = 0
                 switch(msg[0]){
                 case 0x0d:
                     if (Qt.platform.os == "linux")
@@ -150,25 +166,34 @@ ConsoleForm {
                     break
                 case 0x1b:
                     msg.shift()
-                    msg.shift()
-                    var n = Number(String.fromCharCode(msg[0]))
-                    while(!isNaN(n)){
-                        aux = aux*10+n
+                    if (msg[0]==0x5b){
                         msg.shift()
-                        n = Number(String.fromCharCode(msg[0]))
+                        var n = Number(String.fromCharCode(msg[0]))
+                        while(!isNaN(n)){
+                            aux = aux*10+n
+                            msg.shift()
+                            n = Number(String.fromCharCode(msg[0]))
+                        }
+                        switch(msg[0]){
+                        case 0x4b:
+                            if (aux){
+                                eraseLine(aux)
+                            } else {
+                                eraseLine(0)
+                            }
+                            break
+                        case 0x44:
+                            moveCursor(-aux)
+                            break
+                        case 'm':
+                            var a = 0;
+                        }
+                        msg.shift()
                     }
-                    switch(msg[0]){
-                    case 0x4b:
-                        removeAllFromCursor()
-                        break
-                    case 0x44:
-                        moveCursor(-aux)
-                        break
-                    }
-                    msg.shift()
                     break
+
                 default:
-                    remove1Char()
+                    remove1Char() //Par que estaba esto aca?
                     print2Console(String.fromCharCode(msg[0]))
                     msg.shift()
                 }
@@ -188,8 +213,9 @@ ConsoleForm {
     function removeAllFromCursor(){
         textAreaConsole.remove(textAreaConsole.myCursorPosition,textAreaConsole.text.length)
     }
+
     function moveCursor(n){
-        textAreaConsole.myCursorPosition = textAreaConsole.myCursorPosition + n
+        textAreaConsole.myCursorPosition += n
     }
     function print2Console(msg){
         textAreaConsole.insert(textAreaConsole.myCursorPosition,msg)
@@ -205,6 +231,48 @@ ConsoleForm {
         }else{
             textAreaConsole.clear()
             textAreaConsole.myCursorPosition = textAreaConsole.text.length
+        }
+    }
+    function connect() {
+        if (config.radioButtonSerie.checked)
+            config.connectPort()
+        else if (config.radioButtonSsh.checked)
+            config.connectSsh()
+    }
+    function writeString(str){
+        if (config.radioButtonSerie.checked)
+            serial.writeString(str)
+        else if (config.radioButtonSsh.checked)
+            ssh.writeData(str)
+    }
+    function eraseLine(mode){
+        var i;
+        var j;
+        switch (mode){
+        case 0:
+            i = textAreaConsole.myCursorPosition
+            j = textAreaConsole.text.indexOf('\n',textAreaConsole.myCursorPosition)
+            break
+        case 1:
+            i = textAreaConsole.text.lastIndexOf('\n',textAreaConsole.myCursorPosition)
+            i = textAreaConsole.myCursorPosition
+            break
+        case 2:
+            i = textAreaConsole.text.lastIndexOf('\n',textAreaConsole.myCursorPosition)
+            j = textAreaConsole.text.indexOf('\n',textAreaConsole.myCursorPosition)
+            break
+        }
+        if (i === -1) i = 0;
+        if (j === -1) j = textAreaConsole.text.length
+        textAreaConsole.remove(i,j+1)
+    }
+
+    function parse_ansi(msg){
+        var aux = []
+        var arr = msg.split(String.fromCharCode(0x1b));
+        console.log(arr)
+        for (var i = 0; i < arr.length ; i++){
+            var res = arr[i].match(/(?<=[)(.*)[^0-9]/);
         }
     }
 }

@@ -94,7 +94,7 @@ ApplicationWindow {
         connected: serial.openned ? qsTr("Conectado") : qsTr("Desconectado")
         id: cons
         title: "Terminal - " + config.comboPuerto.currentText + ", "
-               + config.comboBaudios.currentText + ", " + connected
+               + config.baudText + ", " + connected
         consmode: config.checkBoxConsola.checked
         hex: config.checkBoxHex.checked
         localEcho: config.checkBoxEcho.checked

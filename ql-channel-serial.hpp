@@ -30,6 +30,7 @@ class QlChannelSerial : public QlChannel {
 
         Q_INVOKABLE virtual QString readText();
         Q_INVOKABLE virtual QString bytes2String(QList<int> bytes);
+        Q_INVOKABLE virtual QList<int> string2Bytes(QString str);
         Q_INVOKABLE virtual qint64 writeBytes(const QList<int> &b);
 
         Q_INVOKABLE virtual bool writeString(const QString &s);
