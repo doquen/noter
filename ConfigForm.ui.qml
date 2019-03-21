@@ -500,12 +500,14 @@ Page {
             RadioButton {
                 id: radioButtonSerie
                 text: qsTr("Serie")
+                visible: false
                 checked: true
             }
 
             RadioButton {
                 id: radioButtonSsh
                 text: qsTr("SSH")
+                visible: false
             }
 
 
@@ -514,7 +516,9 @@ Page {
     }
 }
 
+
+
 /*##^## Designer {
-    D{i:46;anchors_x:"-12";anchors_y:"-66"}D{i:43;anchors_x:"-12";anchors_y:"-66"}
+    D{i:43;anchors_x:"-12";anchors_y:"-66"}D{i:46;anchors_x:"-12";anchors_y:"-66"}
 }
  ##^##*/
