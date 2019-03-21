@@ -173,8 +173,15 @@ qint64 QlChannelSerial::writeBytes(const QList<int> &l) {
 }
 
 bool QlChannelSerial::writeString(const QString &s) {
+    QByteArray data;
+    data.clear();
+    qint64 ret = 0;
+    for(int i = 0; i< s.length(); i++)
+        data.append(s.at(i).toLatin1());
     if (isOpen()){
-        return port_->write(s.toLocal8Bit()) > 0;
+        ret = port_->write(data);
+        qDebug() << ret;
+        return ret>0;
     }
     return false;
 }
