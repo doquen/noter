@@ -14,8 +14,7 @@ ICON = NoTer.ico
 
 SOURCES += main.cpp \
     ql-channel.cpp \
-    ql-channel-serial.cpp \
-    ssh.cpp
+    ql-channel-serial.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,9 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ql-channel.hpp \
-    ql-channel-serial.hpp \
-    ssh.h
+    ql-channel-serial.hpp
 
 DISTFILES +=
-
-LIBS += -lssh

@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QlChannelSerial 1.0
-import Ssh 1.0
 
 ApplicationWindow {
 
@@ -79,13 +78,6 @@ ApplicationWindow {
         }
         onConnected: {
             openned = conn
-        }
-    }
-    Ssh {
-        id: ssh
-        onReadyRead: {
-            var msg = getData()
-            cons.sendText(msg)
         }
     }
 

@@ -7,7 +7,6 @@
 #include <QDebug>
 
 #include "ql-channel-serial.hpp"
-#include "ssh.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +23,6 @@ int main(int argc, char *argv[])
     QFileInfo fi(app.applicationDirPath() + "/../share/icons/hicolor/256x256/apps/NoTer.png");
     QApplication::setWindowIcon(QIcon(fi.absoluteFilePath()));
     qmlRegisterType<QlChannelSerial>("QlChannelSerial",1,0,"QlChannelSerial");
-    qmlRegisterType<Ssh>("Ssh",1,0,"Ssh");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
